@@ -1,0 +1,7 @@
+[build]
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/vote"
+  to = "/.netlify/functions/vote"
+  status = 200
