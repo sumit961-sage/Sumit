@@ -266,22 +266,29 @@
         }
 
         async function submitVote() {
-            const btn = document.getElementById('confirmBtn');
-            btn.innerHTML = '<span class="spinner"></span> Sending...';
-            btn.disabled = true;
+    // Use Formspree instead
+    const formData = new FormData();
+    formData.append('choice', pendingChoice);
+    formData.append('ip', userIP);
+    formData.append('time', new Date().toLocaleString());
+    
+    try {
+        await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        localStorage.setItem('sushana_voted_ip', userIP);
+        localStorage.setItem('sushana_choice', pendingChoice);
+        closeModal();
+        showResponse(pendingChoice);
+        showAlreadyVoted();
+    } catch(e) {
+        alert('Error sending');
+    }
+}
 
-            try {
-                // Send to Netlify Function
-                const response = await fetch('/api/vote', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        choice: pendingChoice,
-                        ip: userIP,
-                        time: new Date().toLocaleString(),
-                        userAgent: navigator.userAgent
-                    })
-                });
 
                 const data = await response.json();
 
