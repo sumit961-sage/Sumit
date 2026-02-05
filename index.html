@@ -113,19 +113,6 @@
         .think-msg { background: rgba(255,255,255,0.2); }
         .no-msg { background: rgba(255,255,255,0.1); }
 
-        .voted-banner {
-            position: fixed; top: 20px; left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.95);
-            color: #764ba2;
-            padding: 15px 30px;
-            border-radius: 50px;
-            display: none;
-            font-weight: bold;
-            z-index: 100;
-        }
-        .voted-banner.show { display: block; }
-
         .spinner {
             display: inline-block;
             width: 20px; height: 20px;
@@ -143,10 +130,6 @@
     </style>
 </head>
 <body>
-    <div class="voted-banner" id="votedBanner">
-        💌 You already responded from this device/IP
-    </div>
-
     <div class="modal" id="confirmModal">
         <div class="modal-content">
             <div style="font-size: 50px; margin-bottom: 10px;" id="modalIcon">💝</div>
@@ -210,38 +193,10 @@
         // ==========================================
         // REPLACE WITH YOUR FORMSPREE ID
         // ==========================================
-        const FORMSPREE_ID = 'xbdargra';
+        const FORMSPREE_ID = 'mkovwpwj'; // Your actual form ID here
         
         let pendingChoice = null;
-        let userIP = null;
-
-        // Get IP immediately
-        fetch('https://api.ipify.org?format=json')
-            .then(r => r.json())
-            .then(data => {
-                userIP = data.ip;
-                checkPreviousVote();
-            })
-            .catch(() => {
-                userIP = 'unknown';
-                checkPreviousVote();
-            });
-
-        function checkPreviousVote() {
-            // Check localStorage first (most reliable)
-            const votedIP = localStorage.getItem('sushana_voted_ip');
-            const savedChoice = localStorage.getItem('sushana_choice');
-            
-            if (votedIP && votedIP === userIP && savedChoice) {
-                showAlreadyVoted(savedChoice);
-            }
-        }
-
-        function showAlreadyVoted(choice) {
-            document.getElementById('votedBanner').classList.add('show');
-            document.getElementById('buttonArea').style.display = 'none';
-            showResponse(choice);
-        }
+        let hasVotedThisSession = false;
 
         const messages = {
             yes: { icon: '💚', title: 'Be my Valentine?', text: 'You are saying YES! This will notify me immediately. Are you certain?' },
@@ -255,13 +210,6 @@
         }
 
         function prepareVote(choice) {
-            // Check if already voted
-            if (localStorage.getItem('sushana_voted_ip') === userIP) {
-                const savedChoice = localStorage.getItem('sushana_choice');
-                showAlreadyVoted(savedChoice || choice);
-                return;
-            }
-
             pendingChoice = choice;
             const m = messages[choice];
             document.getElementById('modalIcon').textContent = m.icon;
@@ -273,7 +221,6 @@
         function closeModal() {
             document.getElementById('confirmModal').classList.remove('show');
             pendingChoice = null;
-            // Reset button
             document.getElementById('btnText').textContent = 'Yes, sure';
             document.getElementById('confirmBtn').disabled = false;
         }
@@ -286,7 +233,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch(`https://formspree.io/f/mkovwpwj`, {
+                const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -294,49 +241,37 @@
                     },
                     body: JSON.stringify({
                         choice: pendingChoice,
-                        ip: userIP,
                         time: new Date().toLocaleString(),
                         device: navigator.userAgent
                     })
                 });
 
-                // Check if already submitted (Formspree returns 422 or 429 for duplicates)
-                if (response.status === 422 || response.status === 429) {
-                    // Already voted - treat as success but show already voted message
-                    localStorage.setItem('sushana_voted_ip', userIP);
-                    localStorage.setItem('sushana_choice', pendingChoice);
-                    
-                    closeModal();
-                    showAlreadyVoted(pendingChoice);
-                    return;
-                }
-
                 if (response.ok) {
                     // Success
-                    localStorage.setItem('sushana_voted_ip', userIP);
-                    localStorage.setItem('sushana_choice', pendingChoice);
-                    
+                    hasVotedThisSession = true;
                     closeModal();
                     showResponse(pendingChoice);
-                    showAlreadyVoted(pendingChoice);
+                    
+                    // Hide buttons after voting (optional - remove this if you want her to vote multiple times)
+                    document.getElementById('buttonArea').style.display = 'none';
                     
                     if (pendingChoice === 'yes') celebrate();
                 } else {
-                    throw new Error('Server error: ' + response.status);
+                    // Formspree error (maybe rate limit) - still show success to user
+                    console.log('Formspree error, but showing success anyway');
+                    hasVotedThisSession = true;
+                    closeModal();
+                    showResponse(pendingChoice);
+                    document.getElementById('buttonArea').style.display = 'none';
                 }
 
             } catch (err) {
                 console.error('Vote error:', err);
-                
-                // Check if it's actually a "already voted" case that we missed
-                if (localStorage.getItem('sushana_voted_ip') === userIP) {
-                    closeModal();
-                    showAlreadyVoted(localStorage.getItem('sushana_choice'));
-                } else {
-                    alert('Failed to send. You may have already voted from this device before, or check your internet connection.');
-                    btnText.textContent = 'Try again';
-                    btn.disabled = false;
-                }
+                // Even on error, show success - don't block her
+                hasVotedThisSession = true;
+                closeModal();
+                showResponse(pendingChoice);
+                document.getElementById('buttonArea').style.display = 'none';
             }
         }
 
@@ -371,3 +306,4 @@
     </script>
 </body>
 </html>
+
