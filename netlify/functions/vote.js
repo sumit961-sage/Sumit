@@ -30,11 +30,11 @@ exports.handler = async (event, context) => {
   const message = `💝 SUSHANA VOTED! 💝\n\nChoice: ${choice.toUpperCase()}\nIP: ${ip}\nTime: ${time}\nDevice: ${userAgent.slice(0, 100)}\n\nTotal unique votes: ${votedIPs.size}`;
   
   try {
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${8020795137:AAE0gRSKNzEYyMqX-1z3BfhP20ZTKxErxlg}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chat_id: CHAT_ID,
+        chat_id: 6725939012,
         text: message,
         parse_mode: 'HTML'
       })
