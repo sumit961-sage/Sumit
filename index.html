@@ -154,7 +154,9 @@
             <p id="modalText">This cannot be undone...</p>
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="closeModal()">Wait</button>
-                <button class="btn-confirm" id="confirmBtn" onclick="submitVote()">Yes, sure</button>
+                <button class="btn-confirm" id="confirmBtn" onclick="submitVote()">
+                    <span id="btnText">Yes, sure</span>
+                </button>
             </div>
         </div>
     </div>
@@ -205,10 +207,15 @@
     </div>
 
     <script>
+        // ==========================================
+        // CONFIGURATION - REPLACE THIS!
+        // ==========================================
+        const FORMSPREE_ID = 'YOUR_FORM_ID_HERE'; // Get from formspree.io
+        
         let pendingChoice = null;
         let userIP = null;
 
-        // Get IP immediately
+        // Get IP on load
         fetch('https://api.ipify.org?format=json')
             .then(r => r.json())
             .then(data => {
@@ -221,7 +228,6 @@
             });
 
         function checkPreviousVote() {
-            // Check if this IP voted before (from localStorage backup)
             const votedIP = localStorage.getItem('sushana_voted_ip');
             if (votedIP && votedIP === userIP) {
                 showAlreadyVoted();
@@ -266,34 +272,30 @@
         }
 
         async function submitVote() {
-    // Use Formspree instead
-    const formData = new FormData();
-    formData.append('choice', pendingChoice);
-    formData.append('ip', userIP);
-    formData.append('time', new Date().toLocaleString());
-    
-    try {
-        await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        });
-        
-        localStorage.setItem('sushana_voted_ip', userIP);
-        localStorage.setItem('sushana_choice', pendingChoice);
-        closeModal();
-        showResponse(pendingChoice);
-        showAlreadyVoted();
-    } catch(e) {
-        alert('Error sending');
-    }
-}
+            const btn = document.getElementById('confirmBtn');
+            const btnText = document.getElementById('btnText');
+            
+            btnText.innerHTML = '<span class="spinner"></span>';
+            btn.disabled = true;
 
-
-                const data = await response.json();
+            try {
+                // Send to Formspree
+                const response = await fetch(`https://formspree.io/f/mreazeqr`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        choice: pendingChoice,
+                        ip: userIP,
+                        time: new Date().toLocaleString(),
+                        device: navigator.userAgent
+                    })
+                });
 
                 if (response.ok) {
-                    // Success - save to localStorage
+                    // Success - save to localStorage to prevent double voting
                     localStorage.setItem('sushana_voted_ip', userIP);
                     localStorage.setItem('sushana_choice', pendingChoice);
                     
@@ -302,21 +304,14 @@
                     showAlreadyVoted();
                     
                     if (pendingChoice === 'yes') celebrate();
-                } else if (response.status === 403) {
-                    // Already voted
-                    localStorage.setItem('sushana_voted_ip', userIP);
-                    localStorage.setItem('sushana_choice', data.choice || pendingChoice);
-                    closeModal();
-                    showAlreadyVoted();
-                    showResponse(data.choice || pendingChoice);
                 } else {
-                    throw new Error('Server error');
+                    throw new Error('Formspree error');
                 }
 
             } catch (err) {
                 console.error(err);
-                alert('Failed to send. Please try again.');
-                btn.innerHTML = 'Yes, sure';
+                alert('Failed to send. Please check your internet connection.');
+                btnText.textContent = 'Yes, sure';
                 btn.disabled = false;
             }
         }
@@ -337,6 +332,7 @@
                     heart.style.fontSize = '30px';
                     heart.style.zIndex = '9999';
                     heart.style.animation = 'fall 3s linear forwards';
+                    heart.style.pointerEvents = 'none';
                     document.body.appendChild(heart);
                     setTimeout(() => heart.remove(), 3000);
                 }, i * 50);
