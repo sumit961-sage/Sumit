@@ -3,563 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Sushana - My Favorite Adventure</title>
+    <title>For Sushana</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .hearts-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .floating-heart {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.6);
-            animation: float-up linear infinite;
-            font-size: 20px;
-        }
-
-        @keyframes float-up {
-            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg) scale(1.2); opacity: 0; }
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
             padding: 20px;
-            text-align: center;
+            color: white;
         }
 
-        .valentine-card {
-            background: rgba(255, 255, 255, 0.15);
+        .card {
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(20px);
             border-radius: 30px;
             padding: 40px 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            max-width: 650px;
-            width: 100%;
-            animation: slide-in 1s ease-out;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
         }
 
-        @keyframes slide-in {
-            0% { transform: translateY(50px) scale(0.9); opacity: 0; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        h1 {
-            color: #fff;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            animation: heartbeat 2s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            14% { transform: scale(1.02); }
-            28% { transform: scale(1); }
-            42% { transform: scale(1.02); }
-            70% { transform: scale(1); }
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            font-weight: 300;
-            font-style: italic;
-        }
-
-        .trek-memory {
-            width: 200px;
-            height: 200px;
+        h1 { font-size: 2.5rem; margin-bottom: 10px; animation: heartbeat 2s infinite; }
+        @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        
+        .trek-box {
+            width: 180px; height: 180px;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
             border-radius: 20px;
-            border: 4px solid rgba(255, 255, 255, 0.5);
-            margin: 0 auto 30px;
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 20px auto;
+            display: flex; align-items: center; justify-content: center;
             font-size: 80px;
             transform: rotate(-3deg);
-            transition: transform 0.3s ease;
-            position: relative;
         }
-
-        .trek-memory:hover { transform: rotate(0deg) scale(1.05); }
 
         .message {
-            color: #fff;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 25px;
             text-align: left;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             padding: 25px;
             border-radius: 20px;
-            border-left: 4px solid rgba(255, 255, 255, 0.5);
+            margin: 20px 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
         }
 
-        .highlight {
-            background: linear-gradient(120deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-weight: 600;
-        }
+        .highlight { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 5px; font-weight: bold; }
 
-        .reveal-btn {
+        button {
             background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             border: none;
-            padding: 18px 40px;
+            padding: 15px 40px;
             border-radius: 50px;
             color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-            font-weight: 600;
-        }
-
-        .reveal-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
-        }
-
-        .hidden-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.8s ease, opacity 0.5s ease;
-            opacity: 0;
-            margin-top: 20px;
-        }
-
-        .hidden-content.show {
-            max-height: 1000px;
-            opacity: 1;
-        }
-
-        .special-message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 25px;
-            border-radius: 20px;
-            color: #fff;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .valentine-question {
-            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
-            border-radius: 25px;
-            padding: 35px 30px;
-            margin-top: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .question-text {
-            color: #fff;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            line-height: 1.3;
-        }
-
-        .question-subtext {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
-            margin-bottom: 30px;
-            font-style: italic;
-        }
-
-        .response-area {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-yes, .btn-think, .btn-no {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
             font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            margin: 10px;
+            transition: transform 0.3s;
         }
 
-        .btn-yes {
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            color: white;
-            box-shadow: 0 5px 20px rgba(0, 184, 148, 0.4);
+        button:hover { transform: scale(1.05); }
+
+        .hidden { display: none; }
+        .show { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } }
+
+        .valentine-q {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid rgba(255,255,255,0.4);
         }
 
-        .btn-yes:hover { transform: scale(1.1); }
+        .question { font-size: 1.8rem; font-weight: bold; margin-bottom: 20px; }
 
-        .btn-think {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-        }
+        .btn-yes { background: linear-gradient(45deg, #00b894, #00cec9); }
+        .btn-think { background: rgba(255,255,255,0.2); border: 2px solid white; }
+        .btn-no { background: transparent; border: 2px solid rgba(255,255,255,0.5); }
 
-        .btn-no {
-            background: transparent;
-            color: rgba(255, 255, 255, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            font-size: 0.9rem;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
+        /* Modal */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-
-        .modal-overlay.show { display: flex; }
-
-        .modal {
-            background: white;
-            color: #333;
-            padding: 40px;
-            border-radius: 25px;
-            max-width: 400px;
-            width: 90%;
+        .modal.show { display: flex; }
+        
+        .modal-content {
+            background: white; color: #333; padding: 30px;
+            border-radius: 20px; max-width: 350px; width: 90%;
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            animation: slide-up 0.4s ease;
         }
 
-        @keyframes slide-up {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .modal-buttons { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        .btn-cancel { background: #ddd; padding: 10px 20px; border-radius: 20px; border: none; }
+        .btn-confirm { background: #ff6b6b; color: white; padding: 10px 20px; border-radius: 20px; border: none; }
+
+        .response-msg {
+            margin-top: 20px; padding: 20px;
+            border-radius: 15px; display: none;
         }
+        .response-msg.show { display: block; }
+        .yes-msg { background: rgba(0,184,148,0.3); }
+        .think-msg { background: rgba(255,255,255,0.2); }
+        .no-msg { background: rgba(255,255,255,0.1); }
 
-        .modal-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .modal h3 {
-            color: #764ba2;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .modal p {
-            color: #555;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .btn-cancel {
-            background: rgba(118, 75, 162, 0.1);
-            border: 2px solid rgba(118, 75, 162, 0.3);
-            color: #764ba2;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-confirm {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .response-message {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 15px;
-            display: none;
-        }
-
-        .response-message.show { display: block; animation: fadeIn 0.5s; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .response-message.yes {
-            background: linear-gradient(135deg, rgba(0, 184, 148, 0.3), rgba(0, 206, 201, 0.3));
-            border: 1px solid rgba(0, 184, 148, 0.5);
-        }
-
-        .response-message.think {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .response-message.no {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .already-voted-banner {
-            position: fixed;
-            top: 20px;
-            left: 50%;
+        .voted-banner {
+            position: fixed; top: 20px; left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.95);
             color: #764ba2;
             padding: 15px 30px;
             border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: none;
+            font-weight: bold;
             z-index: 100;
-            font-weight: 600;
         }
-
-        .already-voted-banner.show { display: block; }
+        .voted-banner.show { display: block; }
 
         .spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border: 3px solid rgba(255,255,255,.3);
             border-radius: 50%;
             border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 1s linear infinite;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 600px) {
             h1 { font-size: 2rem; }
-            .question-text { font-size: 1.4rem; }
-            .response-area { flex-direction: column; }
-            .btn-yes, .btn-think, .btn-no { width: 100%; }
+            .question { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
-    <div class="already-voted-banner" id="votedBanner">
-        💌 You already responded: <span id="votedChoice"></span>
+    <div class="voted-banner" id="votedBanner">
+        💌 You already responded from this device/IP
     </div>
 
-    <!-- Confirmation Modal -->
-    <div class="modal-overlay" id="confirmModal">
-        <div class="modal">
-            <div class="modal-icon" id="modalIcon">💝</div>
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div style="font-size: 50px; margin-bottom: 10px;" id="modalIcon">💝</div>
             <h3 id="modalTitle">Are you sure?</h3>
-            <p id="modalText">This choice cannot be changed...</p>
+            <p id="modalText">This cannot be undone...</p>
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeModal()">Let me think</button>
-                <button class="btn-confirm" id="confirmBtn" onclick="submitVote()">
-                    <span id="btnText">Yes, I'm sure</span>
-                </button>
+                <button class="btn-cancel" onclick="closeModal()">Wait</button>
+                <button class="btn-confirm" id="confirmBtn" onclick="submitVote()">Yes, sure</button>
             </div>
         </div>
     </div>
 
-    <div class="hearts-container" id="heartsContainer"></div>
+    <div class="card">
+        <h1>Hey Sushana 💫</h1>
+        <p style="opacity: 0.9; margin-bottom: 20px;">Some things are worth the climb...</p>
+        
+        <div class="trek-box">🏔️</div>
+        
+        <div class="message">
+            <p>I've been thinking a lot about <span class="highlight">our trek</span> lately. Walking those trails with you changed things for me.</p>
+            <p>You know I care about you as my best friend, but out there—surrounded by mountains, sharing stories—I felt something shift. <span class="highlight">I fell for you more with every step.</span></p>
+            <p>I'm not sure where this leads, and that's okay. I just needed you to know.</p>
+        </div>
 
-    <div class="container">
-        <div class="valentine-card">
-            <h1>Hey Sushana 💫</h1>
-            <p class="subtitle">Some things are worth the climb...</p>
-
-            <div class="trek-memory">
-                <span>🏔️</span>
-                <div style="position: absolute; bottom: 10px; font-size: 12px; color: rgba(0,0,0,0.5); background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">
-                    Our Adventure
-                </div>
+        <button onclick="reveal()" id="revealBtn">Continue the path...</button>
+        
+        <div id="hiddenPart" class="hidden">
+            <div style="font-style: italic; font-size: 1.2rem; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 15px;">
+                "The best view comes after the hardest climb—and realizing I love you felt like reaching the summit."
             </div>
-
-            <div class="message">
-                <p>I've been thinking a lot about <span class="highlight">our trek</span> lately. There's something about walking those trails with you that changed things for me.</p>
-                
-                <p>You know I've always cared about you as my best friend, but out there—surrounded by mountains, sharing stories, laughing until we couldn't breathe—I felt something shift. <span class="highlight">I fell for you a little more with every step.</span></p>
-                
-                <p>I'm not sure where this leads, and that's okay. I don't need answers right now. I just needed you to know that what I feel is real, and it grew stronger on that mountain with you.</p>
-            </div>
-
-            <button class="reveal-btn" id="revealBtn" onclick="revealTruth()">Continue the path...</button>
             
-            <div class="hidden-content" id="hiddenContent">
-                <div class="special-message">
-                    "The best view comes after the hardest climb—and realizing I love you felt like reaching the summit. Not because I wasn't breathless before, but because with you, even the air feels different. You're my favorite adventure, Sushana."
+            <div class="valentine-q">
+                <div class="question">Will you be my Valentine? 💝</div>
+                <p style="opacity: 0.9; margin-bottom: 20px;">Whatever feels right for you.</p>
+                
+                <div id="buttonArea">
+                    <button class="btn-yes" onclick="prepareVote('yes')">Yes, I will 💚</button>
+                    <button class="btn-think" onclick="prepareVote('think')">I need time 🤔</button>
+                    <button class="btn-no" onclick="prepareVote('no')">Stay friends 💙</button>
                 </div>
-
-                <div class="valentine-question">
-                    <div class="question-text">Sushana...<br>Will you be my Valentine? 💝</div>
-                    <div class="question-subtext">Take your time. Whatever feels right for you.</div>
-                    
-                    <div class="response-area" id="responseArea">
-                        <button class="btn-yes" onclick="prepareVote('yes')">Yes, I will 💚</button>
-                        <button class="btn-think" onclick="prepareVote('think')">I need time 🤔</button>
-                        <button class="btn-no" onclick="prepareVote('no')">Let's stay friends 💙</button>
-                    </div>
-
-                    <div class="response-message yes" id="res-yes">
-                        <h3>🎉 You just made me the happiest person!</h3>
-                        <p>This Valentine's Day and every day after, I promise to cherish both your heart and our friendship. Here's to our first of many adventures together!</p>
-                    </div>
-
-                    <div class="response-message think" id="res-think">
-                        <h3>💚 Take all the time you need</h3>
-                        <p>I completely understand. These feelings surprised me too on that trek. There's no rush and no pressure—our friendship has always been about patience and understanding.</p>
-                    </div>
-
-                    <div class="response-message no" id="res-no">
-                        <h3>💙 Thank you for being honest</h3>
-                        <p>I respect that, and I'm grateful for your friendship above all else. The trek was still one of my favorite memories because I got to share it with you.</p>
-                    </div>
+                
+                <div class="response-msg yes-msg" id="res-yes">
+                    <h3>🎉 You made me the happiest!</h3>
+                    <p>Here's to many more adventures together!</p>
+                </div>
+                <div class="response-msg think-msg" id="res-think">
+                    <h3>💚 Take your time</h3>
+                    <p>No rush at all. I'm here whenever you're ready.</p>
+                </div>
+                <div class="response-msg no-msg" id="res-no">
+                    <h3>💙 Thank you for honesty</h3>
+                    <p>Your friendship means everything to me.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURATION - REPLACE THESE VALUES
-        // ==========================================
-        
-        // Option 1: Use SheetDB (Recommended - Free, No signup required for basic use)
-        const SHEETDB_URL = 'https://sheetdb.io/api/v1/YOUR_SHEETDB_ID'; // Get from sheetdb.io
-        
-        // Option 2: Use Google Apps Script (Free, Google account required)
-        const GAS_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // See instructions below
-        
-        // Option 3: Use Telegram Bot (Instant notifications)
-        const BOT_TOKEN = '8020795137:AAE0gRSKNzEYyMqX-1z3BfhP20ZTKxErxlg'; // From @BotFather
-        const CHAT_ID = '6725939012'; // From @userinfobot
-        
-        // Choose which method to use: 'sheetdb', 'gas', or 'telegram'
-        const METHOD = 'telegram'; // CHANGE THIS
-        
-        // ==========================================
-        
         let pendingChoice = null;
         let userIP = null;
-        
-        // Get IP on load
-        async function getIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
+
+        // Get IP immediately
+        fetch('https://api.ipify.org?format=json')
+            .then(r => r.json())
+            .then(data => {
                 userIP = data.ip;
-                checkIfVoted();
-            } catch(e) {
+                checkPreviousVote();
+            })
+            .catch(() => {
                 userIP = 'unknown';
+                checkPreviousVote();
+            });
+
+        function checkPreviousVote() {
+            // Check if this IP voted before (from localStorage backup)
+            const votedIP = localStorage.getItem('sushana_voted_ip');
+            if (votedIP && votedIP === userIP) {
+                showAlreadyVoted();
             }
         }
 
-        // Check if this IP already voted using localStorage as backup
-        function checkIfVoted() {
-            const voted = localStorage.getItem('sushana_voted');
+        function showAlreadyVoted() {
+            document.getElementById('votedBanner').classList.add('show');
+            document.getElementById('buttonArea').style.display = 'none';
             const choice = localStorage.getItem('sushana_choice');
-            
-            if (voted === 'true' && choice) {
-                showAlreadyVoted(choice);
-            }
+            if (choice) showResponse(choice);
         }
 
-        function showAlreadyVoted(choice) {
-            const banner = document.getElementById('votedBanner');
-            const choiceText = {
-                'yes': 'Yes, I will 💚',
-                'think': 'I need time 🤔',
-                'no': 'Let\'s stay friends 💙'
-            };
-            document.getElementById('votedChoice').textContent = choiceText[choice] || choice;
-            banner.classList.add('show');
-            
-            // Disable buttons
-            document.getElementById('responseArea').style.opacity = '0.5';
-            document.getElementById('responseArea').style.pointerEvents = 'none';
-            
-            // Show response
-            showResponse(choice);
-        }
-
-        const modalConfig = {
-            yes: {
-                icon: '💚',
-                title: 'Be my Valentine?',
-                text: 'You\'re about to say YES! This will notify me immediately with your IP address. Are you certain?',
-                btnText: 'Yes, I\'m sure! 💚'
-            },
-            think: {
-                icon: '🤔',
-                title: 'Need time to think?',
-                text: 'You want to take time to decide. That\'s completely okay. This will be recorded. Confirm?',
-                btnText: 'Yes, I need time 🤔'
-            },
-            no: {
-                icon: '💙',
-                title: 'Stay friends?',
-                text: 'You prefer we stay friends. I respect that completely. This will be recorded. Are you sure?',
-                btnText: 'Yes, friends 💙'
-            }
+        const messages = {
+            yes: { icon: '💚', title: 'Be my Valentine?', text: 'You are saying YES! This will notify me immediately. Are you certain?' },
+            think: { icon: '🤔', title: 'Need time?', text: 'You want time to think. That is okay. Confirm?' },
+            no: { icon: '💙', title: 'Stay friends?', text: 'You prefer friendship. I respect that. Are you sure?' }
         };
 
-        function revealTruth() {
-            document.getElementById('hiddenContent').classList.add('show');
+        function reveal() {
+            document.getElementById('hiddenPart').classList.add('show');
             document.getElementById('revealBtn').style.display = 'none';
-            createHearts();
         }
 
         function prepareVote(choice) {
-            // Double check localStorage
-            if (localStorage.getItem('sushana_voted') === 'true') {
-                showAlreadyVoted(localStorage.getItem('sushana_choice'));
+            if (localStorage.getItem('sushana_voted_ip') === userIP) {
+                showAlreadyVoted();
                 return;
             }
 
             pendingChoice = choice;
-            const cfg = modalConfig[choice];
-            
-            document.getElementById('modalIcon').textContent = cfg.icon;
-            document.getElementById('modalTitle').textContent = cfg.title;
-            document.getElementById('modalText').textContent = cfg.text;
-            document.getElementById('btnText').textContent = cfg.btnText;
-            
+            const m = messages[choice];
+            document.getElementById('modalIcon').textContent = m.icon;
+            document.getElementById('modalTitle').textContent = m.title;
+            document.getElementById('modalText').textContent = m.text;
             document.getElementById('confirmModal').classList.add('show');
         }
 
@@ -570,128 +267,55 @@
 
         async function submitVote() {
             const btn = document.getElementById('confirmBtn');
-            const originalText = btn.innerHTML;
             btn.innerHTML = '<span class="spinner"></span> Sending...';
             btn.disabled = true;
 
             try {
-                // Record in localStorage immediately (prevents double voting)
-                localStorage.setItem('sushana_voted', 'true');
-                localStorage.setItem('sushana_choice', pendingChoice);
-                localStorage.setItem('sushana_ip', userIP);
-                localStorage.setItem('sushana_time', new Date().toISOString());
+                // Send to Netlify Function
+                const response = await fetch('/api/vote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        choice: pendingChoice,
+                        ip: userIP,
+                        time: new Date().toLocaleString(),
+                        userAgent: navigator.userAgent
+                    })
+                });
 
-                // Send notification based on method
-                let success = false;
-                
-                if (METHOD === 'telegram') {
-                    success = await sendTelegram();
-                } else if (METHOD === 'sheetdb') {
-                    success = await sendSheetDB();
-                } else if (METHOD === 'gas') {
-                    success = await sendGAS();
-                }
+                const data = await response.json();
 
-                if (success) {
+                if (response.ok) {
+                    // Success - save to localStorage
+                    localStorage.setItem('sushana_voted_ip', userIP);
+                    localStorage.setItem('sushana_choice', pendingChoice);
+                    
                     closeModal();
                     showResponse(pendingChoice);
-                    showAlreadyVoted(pendingChoice);
+                    showAlreadyVoted();
                     
                     if (pendingChoice === 'yes') celebrate();
+                } else if (response.status === 403) {
+                    // Already voted
+                    localStorage.setItem('sushana_voted_ip', userIP);
+                    localStorage.setItem('sushana_choice', data.choice || pendingChoice);
+                    closeModal();
+                    showAlreadyVoted();
+                    showResponse(data.choice || pendingChoice);
                 } else {
-                    throw new Error('Failed to send');
+                    throw new Error('Server error');
                 }
 
             } catch (err) {
-                console.error('Error:', err);
-                alert('Failed to send. Please try again or check your connection.');
-                btn.innerHTML = originalText;
+                console.error(err);
+                alert('Failed to send. Please try again.');
+                btn.innerHTML = 'Yes, sure';
                 btn.disabled = false;
-                
-                // Don't clear localStorage on error so they can't vote twice
-            }
-        }
-
-        // Method 1: Telegram Bot (Instant notification to your phone)
-        async function sendTelegram() {
-            if (!BOT_TOKEN || !CHAT_ID || BOT_TOKEN === 'YOUR_BOT_TOKEN') {
-                console.error('Telegram not configured');
-                return false;
-            }
-
-            const message = `💝 SUSHANA VOTED! 💝\n\n` +
-                           `Choice: ${pendingChoice.toUpperCase()}\n` +
-                           `IP: ${userIP}\n` +
-                           `Time: ${new Date().toLocaleString()}\n` +
-                           `Device: ${navigator.userAgent.slice(0, 50)}...\n\n` +
-                           `Check localStorage for backup data.`;
-
-            try {
-                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: message,
-                        parse_mode: 'HTML'
-                    })
-                });
-                return res.ok;
-            } catch(e) {
-                return false;
-            }
-        }
-
-        // Method 2: SheetDB (Stores in Google Sheet)
-        async function sendSheetDB() {
-            if (!SHEETDB_URL || SHEETDB_URL.includes('YOUR_SHEETDB')) {
-                console.error('SheetDB not configured');
-                return false;
-            }
-
-            try {
-                const res = await fetch(SHEETDB_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        data: [{
-                            ip: userIP,
-                            choice: pendingChoice,
-                            time: new Date().toISOString(),
-                            useragent: navigator.userAgent
-                        }]
-                    })
-                });
-                return res.ok;
-            } catch(e) {
-                return false;
-            }
-        }
-
-        // Method 3: Google Apps Script
-        async function sendGAS() {
-            if (!GAS_URL || GAS_URL.includes('YOUR_SCRIPT')) {
-                console.error('GAS not configured');
-                return false;
-            }
-
-            try {
-                const res = await fetch(GAS_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        ip: userIP,
-                        choice: pendingChoice,
-                        time: new Date().toISOString()
-                    })
-                });
-                return res.ok;
-            } catch(e) {
-                return false;
             }
         }
 
         function showResponse(choice) {
-            document.querySelectorAll('.response-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.response-msg').forEach(el => el.classList.remove('show'));
             document.getElementById('res-' + choice).classList.add('show');
         }
 
@@ -699,786 +323,23 @@
             for (let i = 0; i < 50; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.textContent = ['❤️','💖','💕','✨','🎉'][Math.floor(Math.random()*5)];
+                    heart.textContent = ['❤️','💖','💕','✨'][Math.floor(Math.random()*4)];
                     heart.style.position = 'fixed';
                     heart.style.left = Math.random() * 100 + 'vw';
                     heart.style.top = '-50px';
-                    heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    heart.style.fontSize = '30px';
                     heart.style.zIndex = '9999';
                     heart.style.animation = 'fall 3s linear forwards';
-                    heart.style.pointerEvents = 'none';
                     document.body.appendChild(heart);
                     setTimeout(() => heart.remove(), 3000);
                 }, i * 50);
             }
         }
 
-        function createHearts() {
-            const container = document.getElementById('heartsContainer');
-            const symbols = ['❤️', '💖', '💕', '🏔️', '✨', '🥾'];
-            
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart';
-                heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
-                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                container.appendChild(heart);
-                setTimeout(() => heart.remove(), 8000);
-            }, 400);
-        }
-
-        // Add fall animation
+        // Add animation
         const style = document.createElement('style');
         style.textContent = '@keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }';
         document.head.appendChild(style);
-
-        // Initialize
-        getIP();
-        createHearts();
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Sushana - My Favorite Adventure</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .hearts-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .floating-heart {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.6);
-            animation: float-up linear infinite;
-            font-size: 20px;
-        }
-
-        @keyframes float-up {
-            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg) scale(1.2); opacity: 0; }
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .valentine-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 40px 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            max-width: 650px;
-            width: 100%;
-            animation: slide-in 1s ease-out;
-        }
-
-        @keyframes slide-in {
-            0% { transform: translateY(50px) scale(0.9); opacity: 0; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        h1 {
-            color: #fff;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            animation: heartbeat 2s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            14% { transform: scale(1.02); }
-            28% { transform: scale(1); }
-            42% { transform: scale(1.02); }
-            70% { transform: scale(1); }
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            font-weight: 300;
-            font-style: italic;
-        }
-
-        .trek-memory {
-            width: 200px;
-            height: 200px;
-            border-radius: 20px;
-            border: 4px solid rgba(255, 255, 255, 0.5);
-            margin: 0 auto 30px;
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-            transform: rotate(-3deg);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .trek-memory:hover { transform: rotate(0deg) scale(1.05); }
-
-        .message {
-            color: #fff;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 25px;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 20px;
-            border-left: 4px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-weight: 600;
-        }
-
-        .reveal-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            border: none;
-            padding: 18px 40px;
-            border-radius: 50px;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-            font-weight: 600;
-        }
-
-        .reveal-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
-        }
-
-        .hidden-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.8s ease, opacity 0.5s ease;
-            opacity: 0;
-            margin-top: 20px;
-        }
-
-        .hidden-content.show {
-            max-height: 1000px;
-            opacity: 1;
-        }
-
-        .special-message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 25px;
-            border-radius: 20px;
-            color: #fff;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .valentine-question {
-            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
-            border-radius: 25px;
-            padding: 35px 30px;
-            margin-top: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .question-text {
-            color: #fff;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            line-height: 1.3;
-        }
-
-        .question-subtext {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
-            margin-bottom: 30px;
-            font-style: italic;
-        }
-
-        .response-area {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-yes, .btn-think, .btn-no {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .btn-yes {
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            color: white;
-            box-shadow: 0 5px 20px rgba(0, 184, 148, 0.4);
-        }
-
-        .btn-yes:hover { transform: scale(1.1); }
-
-        .btn-think {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-no {
-            background: transparent;
-            color: rgba(255, 255, 255, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            font-size: 0.9rem;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-overlay.show { display: flex; }
-
-        .modal {
-            background: white;
-            color: #333;
-            padding: 40px;
-            border-radius: 25px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            animation: slide-up 0.4s ease;
-        }
-
-        @keyframes slide-up {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .modal h3 {
-            color: #764ba2;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .modal p {
-            color: #555;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .btn-cancel {
-            background: rgba(118, 75, 162, 0.1);
-            border: 2px solid rgba(118, 75, 162, 0.3);
-            color: #764ba2;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-confirm {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .response-message {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 15px;
-            display: none;
-        }
-
-        .response-message.show { display: block; animation: fadeIn 0.5s; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .response-message.yes {
-            background: linear-gradient(135deg, rgba(0, 184, 148, 0.3), rgba(0, 206, 201, 0.3));
-            border: 1px solid rgba(0, 184, 148, 0.5);
-        }
-
-        .response-message.think {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .response-message.no {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .already-voted-banner {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            color: #764ba2;
-            padding: 15px 30px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: none;
-            z-index: 100;
-            font-weight: 600;
-        }
-
-        .already-voted-banner.show { display: block; }
-
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .question-text { font-size: 1.4rem; }
-            .response-area { flex-direction: column; }
-            .btn-yes, .btn-think, .btn-no { width: 100%; }
-        }
-    </style>
-</head>
-<body>
-    <div class="already-voted-banner" id="votedBanner">
-        💌 You already responded: <span id="votedChoice"></span>
-    </div>
-
-    <!-- Confirmation Modal -->
-    <div class="modal-overlay" id="confirmModal">
-        <div class="modal">
-            <div class="modal-icon" id="modalIcon">💝</div>
-            <h3 id="modalTitle">Are you sure?</h3>
-            <p id="modalText">This choice cannot be changed...</p>
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeModal()">Let me think</button>
-                <button class="btn-confirm" id="confirmBtn" onclick="submitVote()">
-                    <span id="btnText">Yes, I'm sure</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="hearts-container" id="heartsContainer"></div>
-
-    <div class="container">
-        <div class="valentine-card">
-            <h1>Hey Sushana 💫</h1>
-            <p class="subtitle">Some things are worth the climb...</p>
-
-            <div class="trek-memory">
-                <span>🏔️</span>
-                <div style="position: absolute; bottom: 10px; font-size: 12px; color: rgba(0,0,0,0.5); background: rgba(255,255,255,0.5); padding: 5px 10px; border-radius: 10px;">
-                    Our Adventure
-                </div>
-            </div>
-
-            <div class="message">
-                <p>I've been thinking a lot about <span class="highlight">our trek</span> lately. There's something about walking those trails with you that changed things for me.</p>
-                
-                <p>You know I've always cared about you as my best friend, but out there—surrounded by mountains, sharing stories, laughing until we couldn't breathe—I felt something shift. <span class="highlight">I fell for you a little more with every step.</span></p>
-                
-                <p>I'm not sure where this leads, and that's okay. I don't need answers right now. I just needed you to know that what I feel is real, and it grew stronger on that mountain with you.</p>
-            </div>
-
-            <button class="reveal-btn" id="revealBtn" onclick="revealTruth()">Continue the path...</button>
-            
-            <div class="hidden-content" id="hiddenContent">
-                <div class="special-message">
-                    "The best view comes after the hardest climb—and realizing I love you felt like reaching the summit. Not because I wasn't breathless before, but because with you, even the air feels different. You're my favorite adventure, Sushana."
-                </div>
-
-                <div class="valentine-question">
-                    <div class="question-text">Sushana...<br>Will you be my Valentine? 💝</div>
-                    <div class="question-subtext">Take your time. Whatever feels right for you.</div>
-                    
-                    <div class="response-area" id="responseArea">
-                        <button class="btn-yes" onclick="prepareVote('yes')">Yes, I will 💚</button>
-                        <button class="btn-think" onclick="prepareVote('think')">I need time 🤔</button>
-                        <button class="btn-no" onclick="prepareVote('no')">Let's stay friends 💙</button>
-                    </div>
-
-                    <div class="response-message yes" id="res-yes">
-                        <h3>🎉 You just made me the happiest person!</h3>
-                        <p>This Valentine's Day and every day after, I promise to cherish both your heart and our friendship. Here's to our first of many adventures together!</p>
-                    </div>
-
-                    <div class="response-message think" id="res-think">
-                        <h3>💚 Take all the time you need</h3>
-                        <p>I completely understand. These feelings surprised me too on that trek. There's no rush and no pressure—our friendship has always been about patience and understanding.</p>
-                    </div>
-
-                    <div class="response-message no" id="res-no">
-                        <h3>💙 Thank you for being honest</h3>
-                        <p>I respect that, and I'm grateful for your friendship above all else. The trek was still one of my favorite memories because I got to share it with you.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ==========================================
-        // CONFIGURATION - REPLACE THESE VALUES
-        // ==========================================
-        
-        // Option 1: Use SheetDB (Recommended - Free, No signup required for basic use)
-        const SHEETDB_URL = 'https://sheetdb.io/api/v1/YOUR_SHEETDB_ID'; // Get from sheetdb.io
-        
-        // Option 2: Use Google Apps Script (Free, Google account required)
-        const GAS_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // See instructions below
-        
-        // Option 3: Use Telegram Bot (Instant notifications)
-        const BOT_TOKEN = 'YOUR_BOT_TOKEN'; // From @BotFather
-        const CHAT_ID = 'YOUR_CHAT_ID'; // From @userinfobot
-        
-        // Choose which method to use: 'sheetdb', 'gas', or 'telegram'
-        const METHOD = 'telegram'; // CHANGE THIS
-        
-        // ==========================================
-        
-        let pendingChoice = null;
-        let userIP = null;
-        
-        // Get IP on load
-        async function getIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                userIP = data.ip;
-                checkIfVoted();
-            } catch(e) {
-                userIP = 'unknown';
-            }
-        }
-
-        // Check if this IP already voted using localStorage as backup
-        function checkIfVoted() {
-            const voted = localStorage.getItem('sushana_voted');
-            const choice = localStorage.getItem('sushana_choice');
-            
-            if (voted === 'true' && choice) {
-                showAlreadyVoted(choice);
-            }
-        }
-
-        function showAlreadyVoted(choice) {
-            const banner = document.getElementById('votedBanner');
-            const choiceText = {
-                'yes': 'Yes, I will 💚',
-                'think': 'I need time 🤔',
-                'no': 'Let\'s stay friends 💙'
-            };
-            document.getElementById('votedChoice').textContent = choiceText[choice] || choice;
-            banner.classList.add('show');
-            
-            // Disable buttons
-            document.getElementById('responseArea').style.opacity = '0.5';
-            document.getElementById('responseArea').style.pointerEvents = 'none';
-            
-            // Show response
-            showResponse(choice);
-        }
-
-        const modalConfig = {
-            yes: {
-                icon: '💚',
-                title: 'Be my Valentine?',
-                text: 'You\'re about to say YES! This will notify me immediately with your IP address. Are you certain?',
-                btnText: 'Yes, I\'m sure! 💚'
-            },
-            think: {
-                icon: '🤔',
-                title: 'Need time to think?',
-                text: 'You want to take time to decide. That\'s completely okay. This will be recorded. Confirm?',
-                btnText: 'Yes, I need time 🤔'
-            },
-            no: {
-                icon: '💙',
-                title: 'Stay friends?',
-                text: 'You prefer we stay friends. I respect that completely. This will be recorded. Are you sure?',
-                btnText: 'Yes, friends 💙'
-            }
-        };
-
-        function revealTruth() {
-            document.getElementById('hiddenContent').classList.add('show');
-            document.getElementById('revealBtn').style.display = 'none';
-            createHearts();
-        }
-
-        function prepareVote(choice) {
-            // Double check localStorage
-            if (localStorage.getItem('sushana_voted') === 'true') {
-                showAlreadyVoted(localStorage.getItem('sushana_choice'));
-                return;
-            }
-
-            pendingChoice = choice;
-            const cfg = modalConfig[choice];
-            
-            document.getElementById('modalIcon').textContent = cfg.icon;
-            document.getElementById('modalTitle').textContent = cfg.title;
-            document.getElementById('modalText').textContent = cfg.text;
-            document.getElementById('btnText').textContent = cfg.btnText;
-            
-            document.getElementById('confirmModal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('confirmModal').classList.remove('show');
-            pendingChoice = null;
-        }
-
-        async function submitVote() {
-            const btn = document.getElementById('confirmBtn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<span class="spinner"></span> Sending...';
-            btn.disabled = true;
-
-            try {
-                // Record in localStorage immediately (prevents double voting)
-                localStorage.setItem('sushana_voted', 'true');
-                localStorage.setItem('sushana_choice', pendingChoice);
-                localStorage.setItem('sushana_ip', userIP);
-                localStorage.setItem('sushana_time', new Date().toISOString());
-
-                // Send notification based on method
-                let success = false;
-                
-                if (METHOD === 'telegram') {
-                    success = await sendTelegram();
-                } else if (METHOD === 'sheetdb') {
-                    success = await sendSheetDB();
-                } else if (METHOD === 'gas') {
-                    success = await sendGAS();
-                }
-
-                if (success) {
-                    closeModal();
-                    showResponse(pendingChoice);
-                    showAlreadyVoted(pendingChoice);
-                    
-                    if (pendingChoice === 'yes') celebrate();
-                } else {
-                    throw new Error('Failed to send');
-                }
-
-            } catch (err) {
-                console.error('Error:', err);
-                alert('Failed to send. Please try again or check your connection.');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-                
-                // Don't clear localStorage on error so they can't vote twice
-            }
-        }
-
-        // Method 1: Telegram Bot (Instant notification to your phone)
-        async function sendTelegram() {
-            if (!BOT_TOKEN || !CHAT_ID || BOT_TOKEN === 'YOUR_BOT_TOKEN') {
-                console.error('Telegram not configured');
-                return false;
-            }
-
-            const message = `💝 SUSHANA VOTED! 💝\n\n` +
-                           `Choice: ${pendingChoice.toUpperCase()}\n` +
-                           `IP: ${userIP}\n` +
-                           `Time: ${new Date().toLocaleString()}\n` +
-                           `Device: ${navigator.userAgent.slice(0, 50)}...\n\n` +
-                           `Check localStorage for backup data.`;
-
-            try {
-                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: message,
-                        parse_mode: 'HTML'
-                    })
-                });
-                return res.ok;
-            } catch(e) {
-                return false;
-            }
-        }
-
-        // Method 2: SheetDB (Stores in Google Sheet)
-        async function sendSheetDB() {
-            if (!SHEETDB_URL || SHEETDB_URL.includes('YOUR_SHEETDB')) {
-                console.error('SheetDB not configured');
-                return false;
-            }
-
-            try {
-                const res = await fetch(SHEETDB_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        data: [{
-                            ip: userIP,
-                            choice: pendingChoice,
-                            time: new Date().toISOString(),
-                            useragent: navigator.userAgent
-                        }]
-                    })
-                });
-                return res.ok;
-            } catch(e) {
-                return false;
-            }
-        }
-
-        // Method 3: Google Apps Script
-        async function sendGAS() {
-            if (!GAS_URL || GAS_URL.includes('YOUR_SCRIPT')) {
-                console.error('GAS not configured');
-                return false;
-            }
-
-            try {
-                const res = await fetch(GAS_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        ip: userIP,
-                        choice: pendingChoice,
-                        time: new Date().toISOString()
-                    })
-                });
-                return res.ok;
-            } catch(e) {
-                return false;
-            }
-        }
-
-        function showResponse(choice) {
-            document.querySelectorAll('.response-message').forEach(el => el.classList.remove('show'));
-            document.getElementById('res-' + choice).classList.add('show');
-        }
-
-        function celebrate() {
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.textContent = ['❤️','💖','💕','✨','🎉'][Math.floor(Math.random()*5)];
-                    heart.style.position = 'fixed';
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.top = '-50px';
-                    heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
-                    heart.style.zIndex = '9999';
-                    heart.style.animation = 'fall 3s linear forwards';
-                    heart.style.pointerEvents = 'none';
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 3000);
-                }, i * 50);
-            }
-        }
-
-        function createHearts() {
-            const container = document.getElementById('heartsContainer');
-            const symbols = ['❤️', '💖', '💕', '🏔️', '✨', '🥾'];
-            
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart';
-                heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
-                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                container.appendChild(heart);
-                setTimeout(() => heart.remove(), 8000);
-            }, 400);
-        }
-
-        // Add fall animation
-        const style = document.createElement('style');
-        style.textContent = '@keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }';
-        document.head.appendChild(style);
-
-        // Initialize
-        getIP();
-        createHearts();
     </script>
 </body>
 </html>
